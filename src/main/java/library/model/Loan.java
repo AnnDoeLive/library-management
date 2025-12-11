@@ -3,33 +3,16 @@ package library.model;
 import java.time.LocalDate;
 
 public class Loan {
-
     private int id;
     private int bookId;
     private int memberId;
-    private LocalDate borrowDate;
-    private LocalDate returnDate;
-    private String status;
+    private LocalDate loanDate;
+    private LocalDate dueDate;
+    private boolean returned;
 
     public Loan() {}
 
-    public Loan(int id, int bookId, int memberId, LocalDate borrowDate, LocalDate returnDate, String status) {
-        this.id = id;
-        this.bookId = bookId;
-        this.memberId = memberId;
-        this.borrowDate = borrowDate;
-        this.returnDate = returnDate;
-        this.status = status;
-    }
-
-    public Loan(int bookId, int memberId, LocalDate borrowDate, LocalDate returnDate, String status) {
-        this.bookId = bookId;
-        this.memberId = memberId;
-        this.borrowDate = borrowDate;
-        this.returnDate = returnDate;
-        this.status = status;
-    }
-
+    // getters / setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
@@ -39,12 +22,12 @@ public class Loan {
     public int getMemberId() { return memberId; }
     public void setMemberId(int memberId) { this.memberId = memberId; }
 
-    public LocalDate getBorrowDate() { return borrowDate; }
-    public void setBorrowDate(LocalDate borrowDate) { this.borrowDate = borrowDate; }
+    public LocalDate getLoanDate() { return loanDate; }
+    public void setLoanDate(LocalDate loanDate) { this.loanDate = loanDate; }
 
-    public LocalDate getReturnDate() { return returnDate; }
-    public void setReturnDate(LocalDate returnDate) { this.returnDate = returnDate; }
+    public LocalDate getDueDate() { return dueDate; }
+    public void setDueDate(LocalDate dueDate) { this.dueDate = dueDate; }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public boolean isReturned() { return returned; }
+    public void setReturned(boolean returned) { this.returned = returned; }
 }

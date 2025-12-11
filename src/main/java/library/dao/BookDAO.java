@@ -1,6 +1,7 @@
 package library.dao;
 
 import library.model.Book;
+import library.repository.BookRowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -26,6 +27,7 @@ public class BookDAO {
         }
         return false;
     }
+
     public Book updateQuantity(int id, int quantity) {
         String sql = "UPDATE book SET quantity = ? WHERE id = ?";
 
@@ -105,6 +107,24 @@ public class BookDAO {
         }
         return null;
     }
+    public List<String> findAllDistinctCategories() {
+        List<String> list = new ArrayList<>();
+        String sql = "SELECT DISTINCT category FROM book WHERE category IS NOT NULL";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                list.add(rs.getString("category"));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
 
     public List<Book> searchBooksByTitle(String title) {
         List<Book> list = new ArrayList<>();
@@ -135,7 +155,36 @@ public class BookDAO {
         return list;
     }
 
+    public List<Book> findByCategory(String category) {
+        List<Book> list = new ArrayList<>();
+        String sql = "SELECT * FROM books WHERE LOWER(category) = LOWER(?)";
 
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, category);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(mapToBook(rs));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+    private Book mapToBook(ResultSet rs) throws SQLException {
+        return new Book(
+                rs.getInt("id"),
+                rs.getString("title"),
+                rs.getString("author"),
+                rs.getString("publisher"),
+                rs.getString("category"),
+                rs.getInt("quantity")
+        );
+    }
     public List<Book> getAll() {
         List<Book> list = new ArrayList<>();
         String sql = "SELECT * FROM book";

@@ -16,9 +16,9 @@ public class LoanDAO {
 
             ps.setInt(1, l.getBookId());
             ps.setInt(2, l.getMemberId());
-            ps.setDate(3, Date.valueOf(l.getBorrowDate()));
-            ps.setDate(4, Date.valueOf(l.getReturnDate()));
-            ps.setString(5, l.getStatus());
+//            ps.setDate(3, Date.valueOf(l.getBorrowDate()));
+//            ps.setDate(4, Date.valueOf(l.getReturnDate()));
+//            ps.setString(5, l.getStatus());
             return ps.executeUpdate() > 0;
 
         } catch (Exception e) {

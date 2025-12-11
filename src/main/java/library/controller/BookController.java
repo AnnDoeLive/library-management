@@ -15,35 +15,13 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class BookController {
 
+    private final BookService service;
     @Autowired
     private BookService bookService;
-    /** GET /api/books/search?title={title} - Tìm kiếm sách theo title */
-//    @GetMapping("/search/book/{title}")
-//    public ResponseEntity<List<Book>> search(@PathVariable String title) {
-//        System.out.println("Client search = " + title);
-//        List<Book> result = bookService.searchBooksByTitle(title);
-//        return ResponseEntity.ok(result);
-//    }
-
-
-
-    @GetMapping("/{id}/quantity")
-    public ResponseEntity<?> getQuantity(@PathVariable int id) {
-
-        Integer quantity = bookService.getQuantityById(id);
-
-        if (quantity == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Book not found");
-        }
-
-        return ResponseEntity.ok(
-                Map.of(
-                        "id", id,
-                        "quantity", quantity
-                )
-        );
+    public BookController(BookService service) {
+        this.service = service;
     }
+
 
     /** GET /api/books - Lấy danh sách tất cả sách */
     @GetMapping("")
@@ -116,11 +94,11 @@ public class BookController {
     }
 
     /** GET /api/books/author/{author} - Lấy sách theo author */
-    @GetMapping("/author/{author}")
-    public ResponseEntity<List<Book>> getBooksByAuthor(@PathVariable String author) {
-        List<Book> books = bookService.getBooksByAuthor(author);
-        return ResponseEntity.ok(books);
-    }
+//    @GetMapping("/author/{author}")
+//    public ResponseEntity<List<Book>> getBooksByAuthor(@PathVariable String author) {
+//        List<Book> books = bookService.getBooksByAuthor(author);
+//        return ResponseEntity.ok(books);
+//    }
 
     /** PATCH /api/books/{id}/quantity - Cập nhật số lượng sách */
     @PatchMapping("/{id}/quantity")

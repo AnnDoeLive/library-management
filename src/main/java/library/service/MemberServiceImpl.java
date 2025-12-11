@@ -1,7 +1,8 @@
 package library.service;
 
-import library.dao.MemberDAO;
+import library.model.Loan;
 import library.model.Member;
+import library.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,54 +12,51 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService {
 
     @Autowired
-    private MemberDAO memberDAO;
+    private MemberRepository repo;
 
     @Override
     public List<Member> getAllMembers() {
-        // TODO: Implement logic to get all members
-        return null;
+        return repo.findAll();
     }
 
     @Override
     public Member getMemberById(int id) {
-        // TODO: Implement logic to get member by id
-        return null;
+        return repo.findById(id);
     }
 
     @Override
     public Member createMember(Member member) {
-        // TODO: Validate member data
-        // TODO: Check for duplicate email
-        // TODO: Implement logic to create member
-        return null;
+        repo.save(member);
+        return member;
     }
 
     @Override
     public Member updateMember(int id, Member member) {
-        // TODO: Validate member data
-        // TODO: Check if member exists
-        // TODO: Check for duplicate email (if updating email)
-        // TODO: Implement logic to update member
-        return null;
+        Member existing = repo.findById(id);
+        if (existing == null) return null;
+
+        repo.update(id, member);
+        return member;
     }
 
     @Override
     public boolean deleteMember(int id) {
-        // TODO: Check if member has active loans
-        // TODO: Implement logic to delete member
-        return false;
+        if (repo.hasActiveLoans(id)) return false;
+        return repo.delete(id) > 0;
     }
 
     @Override
-    public Member getMemberByEmail(String email) {
-        // TODO: Implement logic to get member by email
-        return null;
+    public Member findByEmail(String email) {
+        return repo.findByEmail(email);
     }
 
     @Override
-    public List<?> getMemberLoans(int memberId) {
-        // TODO: Implement logic to get member loans
-        return null;
+    public boolean hasActiveLoans(int id) {
+        return repo.hasActiveLoans(id);
+    }
+
+    @Override
+    public List<Loan> getLoansByMember(int id) {
+        return repo.findLoans(id);
     }
 }
-
