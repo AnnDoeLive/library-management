@@ -1,5 +1,6 @@
 package library.service;
 
+import library.dao.MemberDAO;
 import library.model.Loan;
 import library.model.Member;
 import library.repository.MemberRepository;
@@ -46,9 +47,11 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Member findByEmail(String email) {
-        return repo.findByEmail(email);
+    public List<Member> findByName(String name) {
+        return MemberDAO.findByName(name);
     }
+
+
 
     @Override
     public boolean hasActiveLoans(int id) {

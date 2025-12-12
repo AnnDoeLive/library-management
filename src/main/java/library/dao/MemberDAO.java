@@ -23,6 +23,31 @@ public class MemberDAO {
         }
         return false;
     }
+    public static List<Member> findByName(String name) {
+        List<Member> list = new ArrayList<>();
+        String sql = "SELECT * FROM members WHERE name ILIKE ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, "%" + name + "%");
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Member m = new Member();
+                m.setId(rs.getInt("id"));
+                m.setName(rs.getString("name"));
+                m.setEmail(rs.getString("email"));
+                m.setPhone(rs.getString("phone"));
+                list.add(m);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
 
     public List<Member> getAll() {
         List<Member> list = new ArrayList<>();

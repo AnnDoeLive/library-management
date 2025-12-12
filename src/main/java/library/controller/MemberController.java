@@ -4,6 +4,8 @@ import library.model.Loan;
 import library.model.Member;
 import library.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,17 +44,26 @@ public class MemberController {
 
     // 5) DELETE
     @DeleteMapping("/{id}")
-    public String deleteMember(@PathVariable int id) {
-        boolean ok = memberService.deleteMember(id);
+    public ResponseEntity<?> deleteMember(@PathVariable int id) {
+        boolean deleted = memberService.deleteMember(id);
 
-        return ok ? "Deleted" : "Member still has active loans!";
+        if (!deleted) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Member with id " + id + " not found");
+        }
+
+        return ResponseEntity.ok("Member deleted successfully");
     }
 
-    // 6) GET search by email
+
+
     @GetMapping("/search")
-    public Member findByEmail(@RequestParam String email) {
-        return memberService.findByEmail(email);
+    public ResponseEntity<List<Member>> searchByName(@RequestParam String name) {
+        System.out.println("Searching member: " + name);
+        List<Member> result = memberService.findByName(name);
+        return ResponseEntity.ok(result);
     }
+
 
     // 7) GET member loans
     @GetMapping("/{id}/loans")
