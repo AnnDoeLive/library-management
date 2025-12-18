@@ -4,8 +4,8 @@ import library.model.Loan;
 import java.util.List;
 
 public interface LoanService {
-    // TODO: Implement all methods
-    
+
+    List<Loan> getLoansByMemberName(String name);
     Loan createLoan(Loan loan);
     List<Loan> getAllLoans();
     Loan getLoanById(int id);
@@ -17,4 +17,3 @@ public interface LoanService {
     Loan extendLoan(int loanId, int days);
     double calculateFine(int loanId);
 }
-

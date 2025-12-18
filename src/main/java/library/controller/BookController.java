@@ -29,7 +29,6 @@ public class BookController {
         return ResponseEntity.ok(books);
     }
 
-
     /** GET /api/books/{id} - Lấy sách theo ID */
     @GetMapping("/id/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable int id) {
@@ -80,10 +79,6 @@ public class BookController {
         List<Book> result = bookService.searchBooksByTitle(title);
         return ResponseEntity.ok(result);
     }
-
-
-
-
 
     /** GET /api/books/category/{category} - Lấy sách theo category */
     @GetMapping("/category/{category}")
