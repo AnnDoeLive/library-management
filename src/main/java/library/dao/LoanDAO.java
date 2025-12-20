@@ -1,6 +1,4 @@
 package library.dao;
-
-import library.dao.DBConnection;
 import library.model.Loan;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +10,57 @@ import java.util.List;
 
 @Repository
 public class LoanDAO {
+    public boolean returnBook(int loanId) {
+        String sql = """
+        UPDATE loans
+        SET returned = true
+        WHERE id = ?
+    """;
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, loanId);
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public Loan getLoanById(int id) {
+        String sql = "SELECT * FROM loans WHERE id = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                Loan loan = new Loan();
+                loan.setId(rs.getInt("id"));
+                loan.setBookId(rs.getInt("book_id"));
+                loan.setMemberId(rs.getInt("member_id"));
+
+                java.sql.Date loanDate = rs.getDate("loan_date");
+                if (loanDate != null)
+                    loan.setLoanDate(loanDate.toLocalDate());
+
+                java.sql.Date dueDate = rs.getDate("due_date");
+                if (dueDate != null)
+                    loan.setDueDate(dueDate.toLocalDate());
+
+                loan.setReturned(rs.getBoolean("returned"));
+
+                return loan;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     public boolean insert(Loan l) {
         String sql = """
@@ -65,7 +114,6 @@ public class LoanDAO {
     }
     public List<Loan> findLoansByMemberName(String name) {
         List<Loan> list = new ArrayList<>();
-
         String sql = """
         SELECT l.*
         FROM loans l
@@ -87,7 +135,6 @@ public class LoanDAO {
                 loan.setLoanDate(rs.getDate("loan_date").toLocalDate());
                 loan.setDueDate(rs.getDate("due_date").toLocalDate());
                 loan.setReturned(rs.getBoolean("returned"));
-
                 list.add(loan);
             }
 

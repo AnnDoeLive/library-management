@@ -24,23 +24,16 @@ public class LoanServiceImpl implements LoanService {
         return success ? loan : null;
     }
 
-    // ====== CHƯA LÀM → return null / empty để KHÔNG lỗi compile ======
-
     @Override
     public List<Loan> getAllLoans() {
         return loanDAO.findAll();
     }
-
 
     @Override
     public Loan getLoanById(int id) {
         return null;
     }
 
-    @Override
-    public Loan returnBook(int loanId) {
-        return null;
-    }
 
     @Override
     public List<Loan> getActiveLoans() {
@@ -65,6 +58,14 @@ public class LoanServiceImpl implements LoanService {
     @Override
     public Loan extendLoan(int loanId, int days) {
         return null;
+    }
+
+    @Override
+    public Loan returnBook(int loanId) {
+        boolean success = loanDAO.returnBook(loanId);
+        if (!success) return null;
+
+        return loanDAO.getLoanById(loanId);
     }
 
     @Override

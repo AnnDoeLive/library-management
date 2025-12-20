@@ -5,11 +5,13 @@ import java.util.List;
 
 public interface LoanService {
 
+    Loan returnBook(int loanId);
+
     List<Loan> getLoansByMemberName(String name);
     Loan createLoan(Loan loan);
     List<Loan> getAllLoans();
     Loan getLoanById(int id);
-    Loan returnBook(int loanId);
+
     List<Loan> getActiveLoans();
     List<Loan> getOverdueLoans();
     List<Loan> getLoansByBookId(int bookId);
