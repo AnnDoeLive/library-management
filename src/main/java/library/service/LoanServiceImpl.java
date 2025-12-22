@@ -34,6 +34,10 @@ public class LoanServiceImpl implements LoanService {
         return null;
     }
 
+    public boolean deleteLoan(int id) {
+
+        return LoanDAO.delete(id) > 0;
+    }
 
     @Override
     public List<Loan> getActiveLoans() {
@@ -67,9 +71,5 @@ public class LoanServiceImpl implements LoanService {
 
         return loanDAO.getLoanById(loanId);
     }
-
-    @Override
-    public double calculateFine(int loanId) {
-        return 0;
-    }
+    
 }

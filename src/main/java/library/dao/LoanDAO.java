@@ -1,10 +1,10 @@
 package library.dao;
 import library.model.Loan;
 import org.springframework.stereotype.Repository;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,7 +102,6 @@ public class LoanDAO {
                 loan.setLoanDate(rs.getDate("loan_date").toLocalDate());
                 loan.setDueDate(rs.getDate("due_date").toLocalDate());
                 loan.setReturned(rs.getBoolean("returned"));
-
                 list.add(loan);
             }
 
@@ -144,5 +143,18 @@ public class LoanDAO {
 
         return list;
     }
+        public static int delete(int id) {
+            String sql = "DELETE FROM loans WHERE id = ?";
+            try (Connection conn = DBConnection.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql)) {
+
+                ps.setInt(1, id);
+                return ps.executeUpdate(); // số dòng bị ảnh hưởng
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
 
 }

@@ -3,6 +3,7 @@ package library.controller;
 import library.model.Loan;
 import library.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -68,6 +69,7 @@ public class LoanController {
     }
 
 
+
     @GetMapping("/book/{bookId}")
     public ResponseEntity<List<Loan>> getLoansByBookId(@PathVariable int bookId) {
 
@@ -85,5 +87,15 @@ public class LoanController {
 
         return ResponseEntity.ok(0.0);
     }
+    @DeleteMapping("/{id}/delete")
+    public ResponseEntity<?> deleteLoanById(@PathVariable int id) {
+        boolean deleted = loanService.deleteLoan(id);
+        if (!deleted) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Member with id " + id + " not found");
+        }
+        return ResponseEntity.ok("Member deleted successfully");
+    }
+
 }
 

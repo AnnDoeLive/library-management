@@ -11,11 +11,10 @@ public interface LoanService {
     Loan createLoan(Loan loan);
     List<Loan> getAllLoans();
     Loan getLoanById(int id);
-
+    boolean deleteLoan(int id);
     List<Loan> getActiveLoans();
     List<Loan> getOverdueLoans();
     List<Loan> getLoansByBookId(int bookId);
     List<Loan> getLoansByMemberId(int memberId);
     Loan extendLoan(int loanId, int days);
-    double calculateFine(int loanId);
 }
