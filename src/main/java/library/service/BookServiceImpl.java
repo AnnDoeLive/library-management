@@ -71,14 +71,8 @@ public class BookServiceImpl implements BookService {
         return bookDAO.findByCategory(category);
     }
 
-
     @Override
     public Book updateBookQuantity(int id, int quantity) {
         return bookDAO.updateQuantity(id, quantity);
     }
-
-//    @Override
-//    public Integer getQuantityById(int id) {
-//        return bookDAO.getQuantityById(id);
-//    }
 }

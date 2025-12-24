@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="about-us-section_container">
+        <div id="discover-restaurant-story-section_container">
+            <h2>Đăng nhập</h2>
+
+            <input id="email" type="email" placeholder="Email"><br><br>
+            <input id="password" type="password" placeholder="Mật khẩu"><br><br>
+
+            <button onclick="login()">Đăng nhập</button>
+
+            <p id="result"></p>
+        </div>
+
+        <div id= "discover-restaurant-story-section_small-title">
+
+        </div>
+
+    </div>
+
+
+    <script>
+        function login() {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            fetch("http://localhost:8080/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error("Login failed");
+                    return res.text();
+                })
+                .then(data => {
+                    document.getElementById("result").innerText = data;
+                })
+                .catch(err => {
+                    document.getElementById("result").innerText = "Sai email hoặc mật khẩu";
+                });
+        }
+    </script>
+
+</body>
+
+</html>

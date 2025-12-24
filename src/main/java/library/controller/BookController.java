@@ -1,12 +1,10 @@
 package library.controller;
-
 import library.model.Book;
 import library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -87,12 +85,6 @@ public class BookController {
         return ResponseEntity.ok(books);
     }
 
-    /** GET /api/books/author/{author} - Lấy sách theo author */
-//    @GetMapping("/author/{author}")
-//    public ResponseEntity<List<Book>> getBooksByAuthor(@PathVariable String author) {
-//        List<Book> books = bookService.getBooksByAuthor(author);
-//        return ResponseEntity.ok(books);
-//    }
 
     /** PATCH /api/books/{id}/quantity - Cập nhật số lượng sách */
     @PatchMapping("/{id}/quantity")
@@ -106,9 +98,6 @@ public class BookController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Book not found or update failed");
         }
-
         return ResponseEntity.ok(updated);
     }
-
-
 }

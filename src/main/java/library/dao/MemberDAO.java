@@ -1,8 +1,6 @@
 package library.dao;
-
 import library.model.Member;
 import org.springframework.stereotype.Repository;
-
 import java.sql.*;
 import java.util.*;
 @Repository
@@ -15,7 +13,6 @@ public class MemberDAO {
             ps.setString(1, m.getName());
             ps.setString(2, m.getEmail());
             ps.setString(3, m.getPhone());
-
             return ps.executeUpdate() > 0;
 
         } catch (Exception e) {
@@ -32,7 +29,6 @@ public class MemberDAO {
 
             ps.setString(1, "%" + name + "%");
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
                 Member m = new Member();
                 m.setId(rs.getInt("id"));
@@ -70,4 +66,28 @@ public class MemberDAO {
         }
         return list;
     }
+    public Member findByEmail(String email) {
+        String sql = "SELECT * FROM members WHERE email = ?";
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new Member(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getString("phone")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
 }
